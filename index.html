@@ -1,1 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Morning Brief</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F3ED;
+    --ink: #1A1410;
+    --warm: #C8965A;
+    --warm-light: #E8C99A;
+    --sage: #6B8C6B;
+    --sky: #4A7FA5;
+    --blush: #C26B5A;
+    --card: #FFFDF9;
+    --muted: #7A6F65;
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 40px;
+  }
+
+  header {
+    background: var(--ink);
+    padding: 28px 20px 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(200,150,90,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .header-date {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--cream);
+    line-height: 1.1;
+  }
+  .header-sub {
+    margin-top: 6px;
+    font-size: 13px;
+    color: rgba(247,243,237,0.5);
+    font-weight: 300;
+  }
+
+  .section { padding: 20px 16px 0; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .section-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 12px rgba(26,20,16,0.06);
+    border: 1px solid rgba(200,150,90,0.1);
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .card-body {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+    font-weight: 300;
+  }
+  .card-tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .scripture-card {
+    background: var(--ink);
+    border-radius: 14px;
+    padding: 24px 20px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .scripture-card::before {
+    content: '\201C';
+    position: absolute;
+    top: -10px; left: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 120px;
+    color: rgba(200,150,90,0.15);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .scripture-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--cream);
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+  .scripture-ref {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--warm);
+    font-weight: 500;
+  }
+  .scripture-reflection {
+    margin-top: 12px;
+    font-size: 12px;
+    color: rgba(247,243,237,0.6);
+    font-style: italic;
+  }
+
+  .goodnews-card { border-left: 3px solid var(--sage); }
+  .goodnews-card .card-title { color: var(--sage); }
+  .tech-card { border-left: 3px solid var(--sky); }
+  .tip-card { border-left: 3px solid var(--warm); }
+  .tip-card .card-title { color: #8B6030; }
+
+  .skeleton {
+    background: linear-gradient(90deg, #ede9e3 25%, #f5f2ed 50%, #ede9e3 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 6px;
+    height: 14px;
+    margin-bottom: 8px;
+  }
+  .skeleton.title { height: 18px; width: 85%; }
+  .skeleton.short { width: 60%; }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .loading-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 12px rgba(26,20,16,0.06);
+  }
+
+  .refresh-btn {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 20px 16px 0;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .refresh-btn:active { transform: scale(0.98); }
+  .refresh-btn:hover { background: #2A2420; }
+  .refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .footer-note {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 24px;
+    padding: 0 16px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-date" id="today-date"></div>
+  <div class="header-title">Morning<br>Brief</div>
+  <div class="header-sub">Curated for a good day ✦</div>
+</header>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#2A2420;">✦</div>
+    <div class="section-label">Word for Today</div>
+  </div>
+  <div id="scripture-container"></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#EBF3FA;">💻</div>
+    <div class="section-label">Tech News</div>
+  </div>
+  <div id="tech-container"></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#FDF3E7;">🤖</div>
+    <div class="section-label">AI Hints & Tips</div>
+  </div>
+  <div id="ai-container"></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#EDF5ED;">🌱</div>
+    <div class="section-label">Good News</div>
+  </div>
+  <div id="goodnews-container"></div>
+</div>
+
+<button class="refresh-btn" id="refresh-btn" onclick="loadAll()">↻ Refresh Brief</button>
+
+<div class="footer-note">Content is AI-generated for inspiration and interest.<br>Verify news stories from original sources.</div>
+
+<script>
+  // Set date
+  const now = new Date();
+  document.getElementById('today-date').textContent = now.toLocaleDateString('en-GB', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  });
+
+  const skeletonHTML = `
+    <div class="loading-card"><div class="skeleton title"></div><div class="skeleton"></div><div class="skeleton short"></div></div>`;
+  const skeletonHTMLx2 = skeletonHTML + skeletonHTML;
+
+  async function callClaude(prompt) {
+    const res = await fetch("/.netlify/functions/ask-claude", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt })
+    });
+    const data = await res.json();
+    return data.text || "";
+  }
+
+  function parseJSON(text) {
+    try {
+      return JSON.parse(text.replace(/```json|```/g, "").trim());
+    } catch { return null; }
+  }
+
+  async function loadScripture() {
+    const el = document.getElementById('scripture-container');
+    el.innerHTML = `<div class="scripture-card">${skeletonHTML}</div>`;
+    try {
+      const raw = await callClaude(
+        `Give me an uplifting Bible scripture for today. Return ONLY valid JSON:
+{"verse":"full verse text","reference":"Book Chapter:Verse","reflection":"one warm sentence reflection"}`
+      );
+      const d = parseJSON(raw);
+      if (!d) throw new Error();
+      el.innerHTML = `
+        <div class="scripture-card">
+          <div class="scripture-text">${d.verse}</div>
+          <div class="scripture-ref">${d.reference}</div>
+          <div class="scripture-reflection">${d.reflection}</div>
+        </div>`;
+    } catch {
+      el.innerHTML = `<div class="scripture-card">
+        <div class="scripture-text">He gives strength to the weary and increases the power of the weak.</div>
+        <div class="scripture-ref">Isaiah 40:29</div></div>`;
+    }
+  }
+
+  async function loadTech() {
+    const el = document.getElementById('tech-container');
+    el.innerHTML = skeletonHTMLx2;
+    try {
+      const raw = await callClaude(
+        `Give me 2 interesting tech news stories from recent weeks. Return ONLY valid JSON array:
+[{"headline":"...","summary":"2-3 sentence accessible summary","tag":"one word e.g. Hardware/Software/Space/Science"}]`
+      );
+      const items = parseJSON(raw);
+      if (!items?.length) throw new Error();
+      el.innerHTML = items.map(i => `
+        <div class="card tech-card">
+          <span class="card-tag" style="background:#EBF3FA;color:var(--sky);">${i.tag}</span>
+          <div class="card-title">${i.headline}</div>
+          <div class="card-body">${i.summary}</div>
+        </div>`).join('');
+    } catch {
+      el.innerHTML = `<div class="card tech-card"><div class="card-title">Could not load — please refresh</div></div>`;
+    }
+  }
+
+  async function loadAI() {
+    const el = document.getElementById('ai-container');
+    el.innerHTML = skeletonHTML;
+    try {
+      const raw = await callClaude(
+        `Give me 1 practical AI tip or prompt trick for everyday life or work. Return ONLY valid JSON:
+{"title":"short catchy title","tip":"2-3 sentence practical explanation with a concrete example","tag":"e.g. Prompting/Productivity/Writing/Images"}`
+      );
+      const d = parseJSON(raw);
+      if (!d) throw new Error();
+      el.innerHTML = `
+        <div class="card tip-card">
+          <span class="card-tag" style="background:#FDF3E7;color:var(--warm);">${d.tag}</span>
+          <div class="card-title">${d.title}</div>
+          <div class="card-body">${d.tip}</div>
+        </div>`;
+    } catch {
+      el.innerHTML = `<div class="card tip-card"><div class="card-title">Could not load — please refresh</div></div>`;
+    }
+  }
+
+  async function loadGoodNews() {
+    const el = document.getElementById('goodnews-container');
+    el.innerHTML = skeletonHTMLx2;
+    try {
+      const raw = await callClaude(
+        `Give me 2 genuinely uplifting good news stories from recent weeks — human interest, science, community, environment. Return ONLY valid JSON array:
+[{"headline":"...","summary":"2-3 sentence warm engaging summary","tag":"one word e.g. Community/Science/Nature/People"}]`
+      );
+      const items = parseJSON(raw);
+      if (!items?.length) throw new Error();
+      el.innerHTML = items.map(i => `
+        <div class="card goodnews-card">
+          <span class="card-tag" style="background:#EDF5ED;color:var(--sage);">${i.tag}</span>
+          <div class="card-title">${i.headline}</div>
+          <div class="card-body">${i.summary}</div>
+        </div>`).join('');
+    } catch {
+      el.innerHTML = `<div class="card goodnews-card"><div class="card-title">Could not load — please refresh</div></div>`;
+    }
+  }
+
+  function loadAll() {
+    const btn = document.getElementById('refresh-btn');
+    btn.disabled = true;
+    btn.textContent = "Loading...";
+    Promise.all([loadScripture(), loadTech(), loadAI(), loadGoodNews()])
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = "↻ Refresh Brief";
+      });
+  }
+
+  loadAll();
+</script>
+</body>
+</html>
